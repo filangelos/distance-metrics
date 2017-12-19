@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def fetch_data(fname='wine.data', ratio=0.8):
+def fetch_data(fname='wine.data', ratio=0.8, standard=True):
     """Bootstrapping helper function for fetching data.
 
     Parameters
@@ -11,6 +11,8 @@ def fetch_data(fname='wine.data', ratio=0.8):
         Name of the `.csv` input file
     ratio: float
         Split ratio of dataset
+    standard: bool
+
 
     Returns
     -------
@@ -31,13 +33,12 @@ def fetch_data(fname='wine.data', ratio=0.8):
 
     #
     test_mask = data[:, 0] == 2
-
     #
-    X_train = data[train_mask, 2:]
+    X_train = data[train_mask, 2:].astype(float)
     y_train = data[train_mask, 1].astype(int)
     y_train -= 1
 
-    X_test = data[test_mask, 2:]
+    X_test = data[test_mask, 2:].astype(float)
     y_test = data[test_mask, 1].astype(int)
     y_test -= 1
 

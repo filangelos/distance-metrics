@@ -12,26 +12,23 @@ from sklearn.model_selection import GridSearchCV
 data = fetch_data()
 
 
-X_train, y_train = data['train']
-X_test, y_test = data['test']
+raw_X_train, y_train = data['train']
+raw_X_test, y_test = data['test']
 
-V = np.cov(X_train)
+scaler = StandardScaler().fit(raw_X_train)
 
-classifier = Pipeline([('youssef', StandardScaler()),
-                       ('sucks', KNeighborsClassifier())])
+X_train = scaler.transform(raw_X_train)
 
-search = GridSearchCV(classifier, {'sucks__n_neighbors': range(1, 20)})
+classifier = KNeighborsClassifier(n_neighbors=14)
 
-search.fit(X_train, y_train)
+classifier.fit(X_train, y_train)
 
-print(search.best_params_)
-
-classifier = search.best_estimator_
+X_test = scaler.transform(raw_X_test)
 
 y_hat = classifier.predict(X_test)
-
-cnf_matrix = confusion_matrix(y_test, y_hat)
 """
+cnf_matrix = confusion_matrix(y_test, y_hat)
+
 plot_confusion_matrix(cnf_matrix, classes=list(set(y_test)),
                       title='Nearest Neighbor\nConfusion Matrix',
                       cmap=plt.cm.Greens)
