@@ -10,11 +10,14 @@ import itertools
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
-                          cmap=plt.cm.Blues):
+                          cmap=plt.cm.Blues,
+                          new_fig=True):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
     """
+    if new_fig:
+        plt.figure()
     if normalize:
         cm = cm.astype('float') / (cm.sum(axis=1)[:, np.newaxis] + 1e-6)
 
@@ -35,3 +38,10 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True Label', fontsize=20)
     plt.xlabel('Predicted Label', fontsize=20)
     plt.tight_layout()
+
+
+def plot_kneighbors_graph(matrix, title='Neighbours Graph', cmap='hot', new_fig=True):
+    if new_fig:
+        plt.figure()
+    plt.imshow(matrix.toarray(), interpolation='nearest', cmap='hot')
+    plt.title(title, fontsize=20)
